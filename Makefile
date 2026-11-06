@@ -1,7 +1,7 @@
 .PHONY: clean format
 
 %: %.c
-	gcc -g -Wall $< -o $@ -lm
+	gcc -g -Wall $< line_input.c vec.c -o $@ -lm
 
 clean:
 	rm -f $(filter-out %.c %.py,$(wildcard day*))
