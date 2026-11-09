@@ -22,6 +22,14 @@ Vec *vec_new(size_t element_size)
     return v;
 }
 
+void vec_free(Vec *self)
+{
+    free(self->data);
+    free(self);
+}
+
+void vec_clear(Vec *self) { self->next_free_element = 0; }
+
 void _vec_maybe_grow(Vec *self)
 {
     if (self->next_free_element * (self->element_size + 1) <
@@ -50,3 +58,17 @@ void *vec_get(Vec *self, size_t i)
 }
 
 size_t vec_len(const Vec *self) { return self->next_free_element; }
+
+Vec *vec_copy(Vec *source)
+{
+    Vec *new_vec = malloc(sizeof(Vec));
+
+    new_vec->element_size = source->element_size;
+    new_vec->next_free_element = source->next_free_element;
+    new_vec->bytes_allocated = source->bytes_allocated;
+
+    new_vec->data = malloc(new_vec->bytes_allocated);
+    memcpy(new_vec->data, source->data, source->bytes_allocated);
+
+    return new_vec;
+}
